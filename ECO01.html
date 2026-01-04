@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoCheers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-principal: #000000;
+      --color-secundario: #d2bbb2;
+      --color-blanco: #ffffff;
+      --color-gris: #f4f4f4;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+    body { font-family: "Montserrat", sans-serif; color:#333; background-color:var(--color-blanco); line-height:1.6; }
+    header { position:fixed; top:0; width:100%; background-color:var(--color-principal); color:var(--color-blanco); display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; z-index:1000; box-shadow:0 2px 5px rgba(0,0,0,0.1); height:80px; overflow:visible; }
+    header img { height:90px; object-fit:contain; margin-top:-5px; }
+    nav ul { list-style:none; display:flex; gap:1.5rem; position:relative; }
+    nav li { position:relative; }
+    nav a { color:var(--color-blanco); text-decoration:none; font-weight:600; cursor:pointer; }
+    nav a:hover { color:var(--color-secundario); }
+    .dropdown-content { display:none; position:absolute; top:100%; left:0; background-color:var(--color-blanco); color:#333; min-width:200px; box-shadow:0 4px 8px rgba(0,0,0,0.2); padding:0.5rem 0; border-radius:8px; }
+    nav li:hover .dropdown-content { display:block; }
+    .dropdown-content a { display:block; padding:0.5rem 1rem; color:#333; text-decoration:none; font-weight:500; }
+    .dropdown-content a:hover { background-color:var(--color-gris); }
+        section { padding:6rem 2rem; max-width:1100px; margin:auto; }
+    .hero { background:url('https://i.imgur.com/fhskMes.png') center/cover no-repeat; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:var(--color-blanco); position:relative; }
+    .hero::after { content:""; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(11,43,51,0.6); z-index:1; }
+    .hero-content { z-index:2; max-width:700px; }
+    .hero h1 { font-size:2.5rem; margin-bottom:1rem; }
+    .hero p { font-size:1.1rem; margin-bottom:2rem; }
+    .btn { background-color:var(--color-secundario); color:var(--color-principal); padding:0.8rem 1.6rem; border-radius:25px; text-decoration:none; font-weight:600; }
+    .btn:hover { background-color:#ffcd4f; }
+    .about { text-align:center; }
+    .about h2 { color:var(--color-principal); margin-bottom:1rem; font-size:2rem; }
+    .about p { max-width:800px; margin:0 auto 2rem; color:#444; }
+    .team-section { margin-top:3rem; scroll-margin-top:100px; }
+    .team-title { color:var(--color-principal); margin:2rem 0 1rem; font-size:1.6rem; font-weight:700; text-transform:uppercase; border-bottom:3px solid var(--color-secundario); display:block; padding-bottom:0.3rem; text-align:center; }
+    .team { display:grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; margin-top:1rem; }
+
+    /* === TARJETAS DE EQUIPO (ya existentes) === */
+    .team-member { background:var(--color-gris); padding:1.5rem; border-radius:12px; text-align:center; }
+    .team-member h3 { color:var(--color-principal); margin-bottom:0.5rem; }
+    .team-member p { font-size:0.9rem; }
+
+    .team-card { position: relative; background: var(--color-blanco); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: transform 0.28s ease; text-align: center; cursor:pointer; }
+    .team-card:hover { transform: translateY(-6px); }
+    .team-img { width: 100%; height: 230px; background: #e6e6e6; background-size: cover; background-position: center; display: block; }
+    .team-info { padding: 14px 12px; }
+    .team-info h3 { margin: 0; font-size: 1.05rem; color: var(--color-principal); }
+    .team-info p { margin: 6px 0 0; font-size: 0.9rem; color: #444; font-weight: 600; }
+    .team-hover {position: absolute;top: 0;left: 0;width: 100%;height: 230px;background: rgba(11,43,51,0.88);color: #fff;display: flex;align-items: center;justify-content: center;text-align: center;padding: 18px;font-size: 0.85rem;line-height: 1.3;opacity: 0;transition: opacity 0.25s ease;pointer-events:none;}
+    .team-card:hover .team-hover { opacity: 1; pointer-events:auto; }
+
+    .events { text-align:center; }
+    .events-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-top:2rem; }
+    .event-card { background: var(--color-gris); border-radius:12px; padding:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition: transform 0.3s; }
+    .event-card:hover { transform: translateY(-5px); }
+    .event-card h4 { color: var(--color-principal); margin:1rem 0 0.5rem; }
+    .event-card p { font-size:0.9rem; }
+    .voluntariado { text-align:center; background: var(--color-principal); color: var(--color-blanco); border-radius:16px; padding:4rem 2rem; }
+    .opiniones-container { display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; margin-top:2rem; }
+    .opinion-card { background: var(--color-gris); padding:1.5rem; border-radius:12px; flex:1 1 300px; max-width:320px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .opinion-card p { font-style:italic; color:#444; }
+    .opinion-card strong { display:block; margin-top:0.5rem; color: var(--color-principal); }
+          footer { background-color: var(--color-principal); color: var(--color-blanco); text-align:center; padding:2rem; }
+    footer a { color: var(--color-secundario); text-decoration:none; margin:0 0.5rem; }
+    footer a:hover { text-decoration: underline; }
+
+    /* === Aseguramiento: las tarjetas de patrocinadores usarán exactamente el mismo estilo que .team-card === */
+    .partners-section { margin-top: 3rem; scroll-margin-top: 100px; padding-bottom: 2rem; }
+    .partners-section h2 { color:var(--color-principal); margin-bottom:1rem; font-size:1.6rem; font-weight:700; text-transform:uppercase; border-bottom:3px solid var(--color-secundario); display:block; padding-bottom:0.3rem; text-align:center; }
+    .partners { display:grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; margin-top:1rem; }
+
+    /* Si quieres cambiar algo visual aquí, modifica las clases de .team-card/.team-img arriba (ya usadas) */
+.partner-hover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.partner-btn {
+  padding: 0.6rem 1.2rem;
+  background: #ffffff;
+  color: #0b2b33;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.partner-btn:hover {
+  background: #e4e4e4;
+}
+
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="https://i.imgur.com/HvG7pwq.jpeg" alt="Logo EcoCheers" />
+  <nav>
+    <ul>
+      <li><a href="#inicio">Inicio</a></li>
+      <li>
+        <a>Quiénes Somos ▼</a>
+        <div class="dropdown-content">
+          <a href="#quienes">Qué es EcoCheers</a>
+          <a href="#mision">Misión, Visión y Valores</a>
+          <a href="#directorio">Equipo y Productos</a>
+        </div>
+          <a href="#opiniones">Opiniones de Clientes</a>
+        </div>
+      </li>
+      <li>
+               </div>
+      </li>
+      <li><a href="#patrocinadores">Patrocinadores</a></li> <!-- ENLACE A LA NUEVA SECCIÓN -->
+    </ul>
+  </nav>
+</header>
+
+<section id="inicio" class="hero">
+  <div class="hero-content">
+    <h1>Convertimos reciclaje en diseño que se usa y se luce.</h1>
+    <p>Somos una iniciativa sustentable comprometida con el reciclaje, el diseño consciente y el consumo responsable.</p>
+    <a href="https://www.instagram.com/eco_cheers.cl/" target="_blank" class="btn">Conócenos</a>
+  </div>
+</section>
+
+<section id="quienes" class="about">
+  <h2>¿Qué es EcoCheers?</h2>
+  <p>
+    Eco Cheers es una emprendimiento sustentable que busca fomentar el consumo responsable y la reutilización de materiales a través del diseño de productos con identidad ecológica. A partir de objetos reciclados —como botellas de vidrio— transformamos residuos en productos funcionales y estéticos, tales como Vasos y Ceniceros dándoles una segunda vida y reduciendo su impacto ambiental.
+
+Creemos que la sostenibilidad también puede ser cercana, atractiva y parte de la vida cotidiana. Por eso, promovemos hábitos de consumo más conscientes, demostrando que pequeñas acciones y decisiones pueden generar un impacto positivo en el medioambiente.<br><br>
+  </p>
+</section>
+
+<section id="mision" class="about">
+  <h2>Misión, Visión y Valores</h2>
+  <div style="max-width:900px; margin:0 auto; text-align:left; display:grid; gap:1.5rem;">
+    <div>
+      <img src="https://i.imgur.com/jjnRenA.png" alt="Imagen representativa" style="max-width:100%; height:auto; display:block; margin-bottom: 1rem;">
+    </div>
+    <div>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="Equipo de trabajo" class="team-section">
+  <h3 class="team-title">Equipo de trabajo</h3>
+  <div class="team">
+    <div class="team-member"><h3>Matías Muñoz</h3><p>Organizador</p></div>
+    <div class="team-member"><h3>Gabriel Alvarez</h3><p>Encargado de Producción</p></div>
+    <div class="team-member"><h3>Igal Leidelstein</h3><p>Encargado de Logística</p></div>
+    <div class="team-member"><h3>Isidora Gonzales</h3><p>Encargada de Marketing</p></div>
+    <div class="team-member"><h3>Adolfo Vargas</h3><p>Encargado de Ventas</p></div>
+    <div class="team-member"><h3>Martina Rodriguez</h3><p>Encargada de Finanzas</p></div>
+   </div>
+ </div>
+
+  <h3 class="team-title">Productos</h3>
+  <div class="team">
+    <div class="team-card">
+      <div class="team-img" style="background-image: url('https://i.imgur.com/d4WxllP.png');"></div>
+      <div class="team-info"><h3>VASOS</h3><p>PRECIO</p></div>
+      <div class="team-hover">Vaso reciclado hecho a partir de botellas de vidrio reutilizadas. Diseño con estilo, impacto ambiental real y una segunda vida en cada uso.
+Durable, funcional y único: una forma simple de consumir mejor y cuidar el planeta todos los días.</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-img" style="background-image: url('foto-pendiente.jpg');"></div>
+      <div class="team-info"><h3>CENICEROS</h3><p>PRECIO</p></div>
+      <div class="team-hover">Cenicero reciclado hecho a partir de botellas de vidrio reutilizadas. Diseño resistente, funcional y con carácter.
+Reduce residuos, aporta estilo y demuestra que incluso los desechos pueden transformarse en objetos con impacto positivo.</div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section id="opiniones" class="about">
+  <h2>Opiniones de Nuestros Clientes</h2>
+  <div class="opiniones-container">
+    <div class="opinion-card">
+      <p>“Me gusta que sea un producto útil y con impacto ambiental real.”</p>
+      <strong>— José Pablo</strong>
+    </div>
+    <div class="opinion-card">
+      <p>“Se siente bien comprar algo reciclado que además se ve bonito.”</p>
+      <strong>— José López</strong>
+    </div>
+    <div class="opinion-card">
+      <p>“Me gusta que tenga una historia detrás.”</p>
+      <strong>— Antonia Díaz</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ======= NUEVA SECCIÓN: PATROCINADORES (idéntica en tamaño y comportamiento a las tarjetas de EQUIPO) ======= -->
+<section id="patrocinadores" class="partners-section">
+  <h3 class="team-title">Patrocinadores</h3>
+
+  <div class="partners">
+    <!-- Tarjeta 1 -->
+    <div class="team-card">
+      <!-- usamos la misma estructura .team-img para que el background-size:cover haga su trabajo -->
+      <div class="team-img" style="background-image: url('https://i.imgur.com/2hKDb1t.png');"></div>
+      <div class="team-info"><h3>BRISAMAR</h3><p>Patrocinador</p></div>
+      <div class="team-hover">Brisa es una discoteca reconocida por su ambiente nocturno vibrante, buena música y una experiencia pensada para disfrutar y bailar, consolidándose como un referente de la vida nocturna local. Se caracteriza por su gran selección de tragos y un público diverso, ideal para quienes buscan bailar y disfrutar del mejor ambiente festivo en la región.<button class="partner-btn"></div>
+
+    </div>
+    <!-- Tarjeta 2 -->
+    <div class="team-card">
+      <div class="team-img" style="background-image: url('https://i.imgur.com/Zv6Xgzm.png');"></div>
+      <div class="team-info"><h3>CANTINA PELICANOS<p>Patrocinador</p></div>
+      <div class="team-hover">Cantina Pelicano es un bar y restaurant ondero frente al mar en Reñaca con una propuesta gastronómica relajada que mezcla cocina de autor, cervezas artesanales y coctelería creativa, ideal para disfrutar con amigos o en plan casual.<button class="partner-btn"></div>
+
+    </div>
+    <!-- Tarjeta 3 -->
+    <div class="team-card">
+      <div class="team-img" style="background-image: url('https://i.imgur.com/wx8VM87.png');"></div>
+      <div class="team-info"><h3>BAR LAS OLAS</h3><p>Patrocinador</p></div>
+      <div class="team-hover">Bar Las Olas es un bar con identidad costera, reconocido por su ambiente relajado, buena música y tragos, ideal para compartir con amigos. Se ha posicionado como un punto de encuentro en la escena local, combinando cercanía, buena atención y un estilo fresco ligado a la vida de playa.<button class="partner-btn"></div>
+    </div>
+
+  <div class="partners">
+    <!-- Tarjeta 4 -->
+    <div class="team-card">
+      <!-- usamos la misma estructura .team-img para que el background-size:cover haga su trabajo -->
+      <div class="team-img" style="background-image: url('https://i.imgur.com/J8zXny0.png');"></div>
+      <div class="team-info"><h3>ACVC<p>Patrocinador</p></div>
+      <div class="team-hover">ACVC es una empresa de climatización comprometida con la eficiencia energética y el cuidado del medio ambiente, ofreciendo soluciones sustentables que buscan reducir el impacto ambiental sin sacrificar confort y calidad. Se destaca por su enfoque responsable, técnico y alineado con el desarrollo sostenible.<button class="partner-btn"></div>
+   </div>
+
+    </div>
+    <!-- Tarjeta 5 -->
+    <div class="team-card">
+      <div class="team-img" style="background-image: url('https://i.imgur.com/TSkQpQT.png');"></div>
+      <div class="team-info"><h3>BARRA CENTRAL<p>Patrocinador</p></div>
+      <div class="team-hover">Barra Central Reñaca es un bar y restaurante frente al mar en Reñaca, reconocido por su ambiente relajado, buena coctelería y una propuesta gastronómica ideal para compartir. Es un punto de encuentro para locales y visitantes, activo en la vida social y gastronómica del sector.<button class="partner-btn"></button></div>
+   </div>
+
+  </div>
+</section>
+<!-- ================================================================================================ -->
+
+<footer>
+  <p>Emprendimientos que transforman el futuro.</p>
+  <p>EcoCheers 2025-2026. </p>
+</footer>
+
+</body>
+</html>
